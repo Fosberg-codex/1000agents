@@ -37,7 +37,7 @@ const Page = () => {
   return (
     <>
       <Nav />
-      <div className='container mx-auto px-4 sm:px-6 lg:px-8 mt-16'>
+      <div className='container mx-auto px-4 sm:px-6 lg:px-8 mt-16 bg-black'>
         {loading ? (
           <div className='flex justify-center mt-12'>
           <div className="w-12 h-12 border-t-4 border-green border-solid p-2 border-black rounded-full animate-spin">
