@@ -12,26 +12,25 @@ const Nav = () => {
   };
 
   const menuItems = [
-    { text: 'Open models', url: '/openmodels' },
-    { text: 'Guide', url: '/docs' },
+    { text: 'Analytics', url: '/docs' },
     { text: 'About', url: '/about' },
   ];
 
   return (
-    <nav className={`${isOpen? "bg-black":"bg-white" }`}>
+    <nav className={`${isOpen? "bg-white":"bg-black" } border-b border-gray-700 backdrop-blur-md fixed top-0 left-0 right-0 `}>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link href="/">
               <div className="flex items-center gap-2 font-bold">
                 <Image
-                  src={isOpen ? "/plutoflow2.png" : "/plutoflow.png"}
+                  src={isOpen ? "/Bot (2).png" : "/Bot (2).png"}
                   alt="PlutoFlow logo"
                   width={45}
                   height={45}
                 />
-                <div className={isOpen ? "text-white" : "text-black"}>
-                  PlutoFlow <span className={`py-1 px-1 text-sm rounded-sm ${isOpen ? "bg-gray-600" : "bg-gray-400"}`}>experimental</span>
+                <div className={isOpen ? "text-white" : "text-white"}>
+                  AgentGalaxy <span className={`py-1 px-1 text-sm rounded-sm ${isOpen ? "bg-gray-600" : "bg-gray-400"}`}>experimental</span>
                 </div>
               </div>
             </Link>
@@ -39,8 +38,8 @@ const Nav = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-4">
-            <div className="flex">
-              <div className="flex gap-4 bg-pink-500 text-white py-2 px-4 rounded-l-sm">
+            <div className="flex items-center">
+              <div className="flex gap-8 text-white py-2 px-4 rounded-l-sm">
                 {menuItems.map((item, index) => (
                   <Link key={index} href={item.url}>
                     <div className="hover:text-gray-300">{item.text}</div>
@@ -48,8 +47,8 @@ const Nav = () => {
                 ))}
               </div>
               <Link href="/modelform">
-                <div className="bg-black text-white py-2 px-4 hover:text-pink-500 rounded-r-sm">
-                  Run your model
+                <div className="bg-textcolor1 text-black py-1 px-2  rounded-md hover:text-pink-500">
+                  Submit
                 </div>
               </Link>
             </div>

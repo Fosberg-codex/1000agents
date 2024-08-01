@@ -6,6 +6,7 @@ import { uploadFileToBlob } from '@/lib/azureBlob';
 
 interface QueryParams {
     search?: string;
+    tags?:string[];
   }
   
 // GET handler for fetching all agents
@@ -17,26 +18,38 @@ export async function GET(request:any) {
 
     const queryParams: QueryParams = {};
     const search = searchParams.get('search');
+    const tags = searchParams.get('tags')?.split(',');
 
     if (search) {
         queryParams.search = search;
       }
+    
+    if (tags && tags.length>0) {
+        queryParams.tags = tags;
+      }
+
 
       const filter: any = {};
 
       if (queryParams.search) {
         filter.$or = [
           { name: { $regex: queryParams.search, $options: 'i' } },
-          { location: { $regex: queryParams.search, $options: 'i' } },
-          { field: { $regex: queryParams.search, $options: 'i' } },
-          { tags: { $elemMatch: { $regex: queryParams.search, $options: 'i' } } },
-          { datasource: { $regex: queryParams.search, $options: 'i' } },
-          { filetype: { $regex: queryParams.search, $options: 'i' } },
-          { fileformat: { $elemMatch: { $regex: queryParams.search, $options: 'i' } } },
+          { description: { $regex: queryParams.search, $options: 'i' } },
+          { submitterName: { $regex: queryParams.search, $options: 'i' } },
+          { tags: { $in: [new RegExp(queryParams.search, 'i')] } },
+          { reference: { $regex: queryParams.search, $options: 'i' } },
         ];
       }
 
-    const agents:any = await Agent.find(filter).exec();
+      if (queryParams.tags && queryParams.tags.length > 0) {
+        filter.tags = { $all: queryParams.tags };
+      }
+
+      console.log('Filter:', JSON.stringify(filter, null, 2))
+
+    const agents = await Agent.find(filter).exec();
+
+    console.log('Agents found:', agents.length);
 
     return NextResponse.json(agents);
   } catch (error:any) {
