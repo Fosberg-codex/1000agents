@@ -73,11 +73,11 @@ export default function IdAgent ({ id, initialAgent }: IdAgentProps) {
       <Nav />
 
       <div className='flex justify-end mt-16'>
-        <div className='flex self-end mt-8 lg:mt-12 md:mt-12 lg:mr-8 md:mr-8 mr-4 text-green underline rounded-md '>
-          <div className='text-sm lg:text-base md:text-base cursor-pointer'>
-            <Link href='/dash/form'>Agent</Link>
-          </div>
-        </div>
+        {/* <div className='flex self-end mt-8 lg:mt-12 md:mt-12 lg:mr-8 md:mr-8 mr-4 text-green underline rounded-md '> */}
+          {/* <div className='text-sm lg:text-base md:text-base cursor-pointer'> */}
+            {/* <Link href='/dash/form'>Agent</Link> */}
+          {/* </div> */}
+        {/* </div> */}
       </div>
 
       {loading ? (
@@ -94,7 +94,7 @@ export default function IdAgent ({ id, initialAgent }: IdAgentProps) {
           please refresh the page
         </div>
       ) : (
-        <div className='pt-8 flex '>
+        <div className='pt-8 flex bg-black text-textcolor1 min-h-screen '>
           <div className='flex flex-col gap-2  lg:gap-3 md:gap-3 px-2 md:px-24 lg:px-24'>
             <div className='text-3xl font-bold text-green'>{agent.name}</div>
             <div className='text-greenal text-justify'>{agent.description}</div>
