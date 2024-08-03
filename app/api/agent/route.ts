@@ -45,7 +45,7 @@ export async function GET(request:any) {
         filter.tags = { $all: queryParams.tags };
       }
 
-      console.log('Filter:', JSON.stringify(filter, null, 2))
+      // console.log('Filter:', JSON.stringify(filter, null, 2))
 
     const agents = await Agent.find(filter).exec();
 

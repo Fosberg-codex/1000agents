@@ -9,7 +9,7 @@ const Page = () => {
 
       <Nav />
       <div className='bg-black flex'>
-      <div className='bg-black text-textcolor1 rounded-lg shadow-md p-6 border border-gray-500 mt-24 mx-4 sm:mx-8 md:mx-12 lg:mx-16'>
+      <div className='bg-black text-textcolor1 rounded-lg shadow-md p-6 border border-gray-500 mt-24 mx-4 sm:mx-8 md:mx-12 lg:mx-16 mb-4'>
         <div className='flex flex-col  gap-6 sm:gap-8 md:gap-10'>
           <div className='flex flex-col gap-2 sm:gap-3'>
             <h2 className='text-lg sm:text-xl md:text-2xl font-bold'>
