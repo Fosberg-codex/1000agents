@@ -12,8 +12,8 @@ const Nav = () => {
   };
 
   const menuItems = [
-    { text: 'Follow Creator', url: '/mailto:fosberg1addai@gmail.com' },
-    { text: 'Analytics', url: '/docs' },
+    { text: 'Follow Creator', url: 'https://codeandlifebyfosberg.beehiiv.com/subscribe' },
+    { text: 'Analytics', url: 'mailto:fosberg1addai@gmail.com' },
     { text: 'About', url: '/about' },
   ];
 
@@ -31,7 +31,7 @@ const Nav = () => {
                   height={45}
                 />
                 <div className={isOpen ? "text-white" : "text-white"}>
-                  AgentGalaxy <span className={`py-1 px-1 text-sm rounded-sm text-black ${isOpen ? "bg-green-200" : "bg-green-200"}`}>new</span>
+                  Agentshive <span className={`py-1 px-1 text-sm rounded-sm text-black ${isOpen ? "bg-green-200" : "bg-green-200"}`}>new</span>
                 </div>
               </div>
             </Link>
@@ -67,15 +67,15 @@ const Nav = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 absolute z-20 w-full h-screen bg-black space-y-1 sm:px-3">
+          <div className="px-2 pt-2 pb-3 absolute z-20 w-full h-screen bg-black/95 backdrop-blur-xl  space-y-1 sm:px-3">
             {menuItems.map((item, index) => (
               <Link key={index} href={item.url}>
-                <div className="text-white hover:bg-gray-800 block px-3 py-2 rounded-md text-base font-medium">
+                <div className="text-white hover:bg-textcolor1 hover:text-black block px-3 py-2 rounded-md text-base font-medium">
                   {item.text}
                 </div>
               </Link>
             ))}
-            <Link href="/mailto:fosberg1addai@gmail.com">
+            <Link href="mailto:fosberg1addai@gmail.com">
               <div className="bg-textcolor1 text-black rounded-full block px-3 py-2 text-base font-medium">
                 Boost your agent
               </div>

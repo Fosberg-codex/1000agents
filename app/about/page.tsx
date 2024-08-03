@@ -47,7 +47,7 @@ const Page = () => {
 
           <div className='flex flex-col gap-2 sm:gap-3'>
             <h2 className='text-lg sm:text-xl md:text-2xl font-bold'>
-              Is my model safe?
+              Is the site safe?
             </h2>
             <div className='text-sm sm:text-base md:text-md'>
               <p className='mb-2 sm:mb-3'>

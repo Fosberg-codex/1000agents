@@ -14,7 +14,7 @@ export const generateMetadata = async ({
 }): Promise<Metadata> => {
   const { name, tags} = searchParams;
 
-  let title = 'Data Room';
+  let title = 'AgentGalaxy | Home';
   let description = 'Explore a galaxy of AI Agents';
 
   if (name || tags) {

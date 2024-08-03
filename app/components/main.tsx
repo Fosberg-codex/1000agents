@@ -107,16 +107,27 @@ const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) =>
                     <div className='text-textcolor1'>Categories</div>
 
                     {['All', 'SEO', 'Writing', 'Web scraping', 'Programming', 'RAG'].map((tag) => (
-                        <label key={tag} className="whitespace-nowrap text-base rounded-md border border-gray-600 px-2 py-1 ">
-                            <input
-                                type='checkbox'
-                                value={tag}
-                                checked={searchParams.get('tags')?.split(',').includes(tag) || false}
-                                onChange={(e) => handleInputChange(e, 'tags')}
-                                className='mr-1'
-                            />
-                            {tag}
-                        </label>
+                        <label
+          key={tag}
+          className={`
+            whitespace-nowrap text-base rounded-md px-2 py-1 cursor-pointer
+            transition-colors duration-200 ease-in-out
+            ${
+              searchParams.get('tags')?.split(',').includes(tag)
+                ? 'bg-green-200 text-black'
+                : 'bg-transparent text-textcolor1 border border-textcolor1 hover:bg-green-200 hover:text-black'
+            }
+          `}
+        >
+          <input
+            type="checkbox"
+            value={tag}
+            checked={searchParams.get('tags')?.split(',').includes(tag) || false}
+            onChange={(e) => handleInputChange(e, 'tags')}
+            className="absolute opacity-0 w-0 h-0"
+          />
+          {tag}
+        </label>
                     ))}
                 </div>
 
@@ -128,13 +139,13 @@ const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) =>
                         </div>
                         <div className='mb-3'>Carefully vetted and maintained by humans.</div>
                         <div className='flex gap-4 items-center mb-6'>
-                            <div onClick={() =>{router.push('/')}} className='Cursor-point flex gap-1 items-center rounded-full bg-textcolor1 text-black px-2 py-1'>
+                            <div onClick={() =>{router.push('/submitagent')}} className='cursor-pointer flex gap-1 items-center rounded-full bg-textcolor1 text-black px-2 py-1'>
                                 <div>
                                     <Plus />
                                 </div>
                                 <div>Submit</div>
                             </div>
-                            <div onClick={() =>{router.push('/')}} className='cursor-pointer flex gap-1 items-center rounded-full bg-textcolor1 text-black px-2 py-1'>
+                            <div onClick={() =>{router.push('https://codeandlifebyfosberg.beehiiv.com/subscribe')}} className='cursor-pointer flex gap-1 items-center rounded-full bg-textcolor1 text-black px-2 py-1'>
                                 <div>
                                     <MailPlus />
                                 </div>
@@ -151,16 +162,30 @@ const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) =>
                                     </div>
                                     <div className='flex gap-2 flex-wrap mt-2'>
                                         {['All','SEO', 'Writing', 'Web scraping', 'Programming', 'RAG'].map((tag) => (
-                                            <label key={tag} className="whitespace-nowrap text-base rounded-md border border-gray-600 px-2 py-1 ">
-                                                <input
-                                                    type='checkbox'
-                                                    value={tag}
-                                                    checked={searchParams.get('tags')?.split(',').includes(tag) || false}
-                                                    onChange={(e) => handleInputChange(e, 'tags')}
-                                                    className='mr-1'
-                                                />
-                                                {tag}
-                                            </label>
+                                            <label
+                                            key={tag}
+                                            className={`
+                                              flex items-center justify-center
+                                              whitespace-nowrap text-sm sm:text-sm rounded-full
+                                              px-3 py-2 sm:px-4 sm:py-2 cursor-pointer
+                                              transition-all duration-200 ease-in-out
+                                              ${
+                                                searchParams.get('tags')?.split(',').includes(tag)
+                                                  ? 'bg-green-200 text-black shadow-md'
+                                                  : ' bg-transparent text-textcolor1 border border-textcolor1 hover:bg-green-200 hover:text-black'
+                                              }
+                                              active:scale-95 touch-manipulation
+                                            `}
+                                          >
+                                            <input
+                                              type="checkbox"
+                                              value={tag}
+                                              checked={searchParams.get('tags')?.split(',').includes(tag) || false}
+                                              onChange={(e) => handleInputChange(e, 'tags')}
+                                              className="absolute opacity-0 w-0 h-0"
+                                            />
+                                            {tag}
+                                          </label>
                                         ))}
                                     </div>
                                 </>
@@ -207,7 +232,7 @@ const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) =>
                                                 <div className='flex gap-2 items-center'>
                                                     <div>
                                                         <Image
-                                                            src={agent.logo}
+                                                            src={agent.logo||'Bot (1).png'}
                                                             alt={agent.name}
                                                             width={45}
                                                             height={45}
@@ -221,7 +246,7 @@ const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) =>
                                                 <span className='text-white-gray-500 text-xs font-medium rounded-md px-2 py-1'>
                                                     {agent.tags[0]}
                                                 </span>
-                                                <span className='text-sm text-black rounded-md px-2 py-1 bg-green-200 border-green-200'>
+                                                <span className='text-sm text-black rounded-md px-2 py-1 bg-textcolor1 hover:bg-green-200'>
                                                     view
                                                 </span>
                                             </div>
