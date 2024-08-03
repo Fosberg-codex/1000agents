@@ -135,7 +135,7 @@ const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) =>
                 <div className='w-full lg:w-10/12 lg:ml-auto px-4 lg:px-12 flex flex-col gap-2 mb-8 mt-24'>
                     <div className='flex gap-2 flex-col text-textcolor1 lg:mt-0 sm:mt-0'>
                         <div className='text-4xl font-bold mb-2'>
-                            An exclusive list of the 1000s of AI agents.
+                            An exclusive list of 1000s of AI agents.
                         </div>
                         <div className='mb-3'>Carefully vetted and maintained by humans.</div>
                         <div className='flex gap-4 items-center mb-6'>
