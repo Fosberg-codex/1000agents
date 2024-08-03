@@ -20,7 +20,7 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ success: true, data: agent });
+    return NextResponse.json(agent);
   } catch (error: any) {
     console.error('Error in GET /api/agents/[id]:', error);
     return NextResponse.json(

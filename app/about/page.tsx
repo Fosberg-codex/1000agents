@@ -6,20 +6,20 @@ import Link from 'next/link'
 const Page = () => {
   return (
     <>
+
       <Nav />
-      <div className='bg-white rounded-lg shadow-md p-6 border bordder-gray-200 mt-24 mx-4 sm:mx-8 md:mx-12 lg:mx-16'>
+      <div className='bg-black flex'>
+      <div className='bg-black text-textcolor1 rounded-lg shadow-md p-6 border border-gray-500 mt-24 mx-4 sm:mx-8 md:mx-12 lg:mx-16'>
         <div className='flex flex-col  gap-6 sm:gap-8 md:gap-10'>
           <div className='flex flex-col gap-2 sm:gap-3'>
             <h2 className='text-lg sm:text-xl md:text-2xl font-bold'>
-              Why PlutoFlow
+              Why Agent Galaxy
             </h2>
-            <p className='text-sm sm:text-base md:text-lg'>
-              Most data professionals are not good at software development or
-              engineering, so PlutoFlow was created to be an easy, possibly a
-              no-code platform that can help data professionals and companies
-              test and scale their ML models in production. We are working hard
-              to be simple and also help you create APIs with an upload of a
-              model.
+            <p className='text-sm sm:text-base md:text-md'>
+            By 2030, AI agents will be revolutionizing the way we interact with technology. From automating simple tasks to developing Artificial General Intelligence (AGI), the future of AI promises to be both exciting and transformative.
+            Whether you're looking for an agent to handle routine tasks, provide advanced analytical insights, or collaborate on complex projects, AgentGalaxy is designed to simplify your search. We curate a diverse range of AI agents, each equipped to tackle various challenges and deliver exceptional results.
+             And this platform aim to assist coporate workers
+              researchers, IT professionals and businesses find more agents.
             </p>
   
           </div>
@@ -27,7 +27,7 @@ const Page = () => {
             <h2 className='text-lg sm:text-xl md:text-2xl font-bold'>
               Who is behind this
             </h2>
-            <div className='text-sm sm:text-base md:text-lg'>
+            <div className='text-sm sm:text-base md:text-md'>
               <p className='mb-2 sm:mb-3'>
                 I am Fosberg, and I built this. I am into software engineering,
                 machine learning engineering, and AI engineering. I am also a
@@ -49,14 +49,15 @@ const Page = () => {
             <h2 className='text-lg sm:text-xl md:text-2xl font-bold'>
               Is my model safe?
             </h2>
-            <div className='text-sm sm:text-base md:text-lg'>
+            <div className='text-sm sm:text-base md:text-md'>
               <p className='mb-2 sm:mb-3'>
-                Yes your model is safe. It is stored in Azure Blob storage account. Sincerely it is not reviewed for anything. We are building
+                Yes your data is safe after submission. It stored in MongoDB database with azure clustor. Sincerely it is not reviewed for anything. We are building
                 a community to help scientists and developers and we respect thier contributions to open and close ML/AI.
               </p>
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   )

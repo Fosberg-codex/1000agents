@@ -1,161 +1,136 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import { Menu, X, FolderPlus, Router } from 'lucide-react'
-import Link from 'next/link'
-import Nav from '../components/nav'
-//export const //runtime = "edge";
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import Nav from '../components/nav';
+import { useRouter } from 'next/navigation';
 
-interface Agent {
-  _id: string
-  name: string
-  description: string
-  submitterName: string
-  submitterURL: string
-  link: string
-  logo: string
-  logoFileName: string
-  tags: string[]
-  reference: string
-  updatedAt?: string | any
+type Dataset = {
+  _id?: string;
+  name?: string;
+  description?: string;
+  submitterName?: string;
+  submitterURL?: string;
+  link?: string;
+  logo?: string;
+  logoFileName?: string;
+  tags?: string[];
+  reference?: string;
+  createdAt?: string;
+  updatedAt?: string|any;
 }
 
-async function getAgent (id: string): Promise<Agent | null> {
+async function getDataset(id: string): Promise<Dataset | null> {
   try {
-    const res = await fetch(`/api/agent/${id}`, { cache: 'no-cache' })
-    if (!res.ok) return null
-    const data: Agent = await res.json()
-    return data
+    const res = await fetch(`/api/agent/${id}`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    const data: Dataset = await res.json();
+    return data;
   } catch (error) {
-    console.error('Failed to fetch agent:', error)
-    return null
+    console.error('Failed to fetch dataset:', error);
+    return null;
   }
 }
 
-interface IdAgentProps {
-  id: string
-  initialAgent: Agent | any
+interface IdDashProps {
+  id: string;
+  initialDataset: Dataset | null;
 }
 
-export default function IdAgent ({ id, initialAgent }: IdAgentProps) {
-  const [agent, setAgent] = useState<Agent | null>(initialAgent)
-  const [loading, setLoading] = useState(!initialAgent)
-  const [error, setError] = useState('')
+export default function IdDash({ id, initialDataset }: IdDashProps) {
+  const [dataset, setDataset] = useState<Dataset | null>(initialDataset);
+  const [loading, setLoading] = useState(!initialDataset);
+  const [error, setError] = useState('');
+
+  const router = useRouter()
 
   useEffect(() => {
-    async function fetchData () {
-      if (!agent) {
-        const data = await getAgent(id)
+    async function fetchData() {
+      if (!dataset) {
+        const data = await getDataset(id);
         if (!data) {
-          setError('Sorry, we couldnt find the AI agnet youre looking for.')
+          setError("Sorry, we couldn't find the dataset you're looking for.");
         } else {
-          setAgent(data)
+          setDataset(data);
         }
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    fetchData()
-  }, [id, agent])
+    fetchData();
+  }, [id, dataset]);
 
-  const viewDownload = () => {
-    if (agent) {
-      window.open(`${agent.link}`, '_blank')
-    }
+  if (loading) {
+    return (
+      <>
+        <Nav />
+        <div className='flex pt-24 flex-col gap-2 justify-center items-center'>
+          <div className="w-16 h-16 border-t-4 border-green border-solid rounded-full animate-spin"></div>
+          <div>Please wait...</div>
+        </div>
+      </>
+    );
   }
 
-  const title = 'Go back'
-  const link = '/dash'
+  if (error || !dataset) {
+    return (
+      <>
+        <Nav />
+        <div className='pt-36 flex justify-center text-bold text-2xl text-red-700'>
+          {error || 'Error while loading data'}
+          <br />
+          please refresh the page
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
       <Nav />
-
-      <div className='flex justify-end mt-16'>
-        {/* <div className='flex self-end mt-8 lg:mt-12 md:mt-12 lg:mr-8 md:mr-8 mr-4 text-green underline rounded-md '> */}
-          {/* <div className='text-sm lg:text-base md:text-base cursor-pointer'> */}
-            {/* <Link href='/dash/form'>Agent</Link> */}
-          {/* </div> */}
-        {/* </div> */}
+      <div className='flex text-textcolor1 justify-center bg-black min-h-screen px-4 sm:px-6 md:px-8'>
+        <div className='flex flex-col justify-center gap-2 w-full sm:w-10/12 md:w-8/12 lg:w-6/12 mt-24 mb-8'>
+          <div className='flex-start'>
+            <Image
+              src={dataset.logo || ''}
+              alt={dataset.name || ''}
+              width={75}
+              height={75}
+            />
+          </div>
+          <div className='flex flex-col sm:flex-row gap-4 items-start sm:items-center'>
+            <div className='text-2xl sm:text-3xl font-bold'>{dataset.name}</div>
+            {dataset.link && (
+              <Link href={dataset.link} passHref>
+                <div className='px-4 sm:px-6 py-1 bg-textcolor1 rounded-md text-black text-sm sm:text-base'>Visit</div>
+              </Link>
+            )}
+          </div>
+          {dataset.reference && (
+            <Link href={dataset.reference} passHref>
+              <div className='underline text-sm sm:text-base'>Check resources</div>
+            </Link>
+          )}
+          <div className='border-t-1 border-x-textcolor1/50 text-sm sm:text-base'>
+            {dataset.description}
+          </div>
+          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center text-wrap'>
+            <div className='flex flex-wrap gap-2'>
+                {dataset.tags && 
+                   dataset.tags.map((data) => ( 
+                     <div className='px-2 py-1 bg-creams border border-gray-500 rounded-md mt-2 hover:bg-green-500 hover:text-black text-xs sm:text-sm' key={data}> 
+                       {data} 
+                     </div> 
+                   ))} 
+            </div>
+            <div onClick={()=>{router.push(`/${dataset.submitterURL}`)}} className='cursor-pointer hover:text-green-700 underline mt-4 sm:mt-0 text-sm sm:text-base'>
+              Submitted by: {dataset.submitterName}
+            </div>
+          </div>
+          <div className='text-gray-400 text-sm sm:text-base'><span>Last updated:</span> {new Date(dataset.updatedAt).toLocaleDateString('en-GB')}</div>
+        </div>
       </div>
-
-      {loading ? (
-        <>
-          <div className='flex pt-36 flex-col gap-2 justify-center items-center'>
-            <div className='w-16 h-16 border-t-4 border-green border-solid rounded-full animate-spin'></div>
-            <div>Please wait...</div>
-          </div>
-        </>
-      ) : !agent ? (
-        <div className='pt-36 flex justify-center text-bold text-2xl text-red-700'>
-          Error while loading data
-          <br />
-          please refresh the page
-        </div>
-      ) : (
-        <div className='pt-8 flex bg-black text-textcolor1 min-h-screen '>
-          <div className='flex flex-col gap-2  lg:gap-3 md:gap-3 px-2 md:px-24 lg:px-24'>
-            <div className='text-3xl font-bold text-green'>{agent.name}</div>
-            <div className='text-greenal text-justify'>{agent.description}</div>
-            <div className='flex gap-4'>
-              <div className='p-1 text-green text-lg'>
-                <span className='font-semibold'>Sector</span> {agent.name}
-              </div>
-              <div className='p-1 bg-gray-800 rounded-md text-cream'>
-                <span className='text-cream'>Country:</span> {agent.name}
-              </div>
-            </div>
-            <div>
-              <span className='font-semibold'>File Type:</span> {agent.name}
-            </div>
-            <div className='flex gap-2 items-center justify-start'>
-              <div className='font-semibold text-lg'>Data format</div>
-              {agent.tags &&
-                agent.tags.map(data => (
-                  <div
-                    className='px-2 py-1 bg-creams border border-gray-500 rounded-md mt-2'
-                    key={data}
-                  >
-                    {data}
-                  </div>
-                ))}
-            </div>
-            <div
-              onClick={viewDownload}
-              className='self-start text-cream bg-blue-800 hover:bg-blue-800/60 cursor-pointer px-2 py-1 mt-2 mb-4 lg:mb-1 md:mb-1 rounded-md'
-            >
-              view and download
-            </div>
-            <div className='lg:hidden md:hiden font-semibold text-lg'>
-              Tags related to data:
-            </div>
-            <div className='flex flex-row lg:flex-row md:flex-row gap-2 items-center justify-start'>
-              <div className='hidden lg:block md:block font-semibold text-lg'>
-                Tags related to data:
-              </div>
-              {agent.tags &&
-                agent.tags.map(data => (
-                  <div
-                    className='px-2 py-1 bg-gray-600 text-cream border border-gray-500 rounded-md lg:mt-2 mtd:mt-2'
-                    key={data}
-                  >
-                    #{data}
-                  </div>
-                ))}
-            </div>
-            <div className='flex gap-4 text-lg'>
-              <div>
-                <span className='font-bold'>Last updated:</span>{' '}
-                {new Date(agent.updatedAt).toLocaleDateString('en-GB')}
-              </div>
-              <div>
-                <span className='font-bold'>Source:</span> {agent.submitterName}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
-  )
+  );
 }

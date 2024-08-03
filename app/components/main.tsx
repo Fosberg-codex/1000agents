@@ -3,229 +3,238 @@ import React, { useState, useEffect } from 'react'
 import Nav from '@/app/components/nav'
 import Image from 'next/image'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { Plus, MailPlus } from 'lucide-react'
+import { Plus, MailPlus, Menu } from 'lucide-react'
 
 type Agent = {
     _id: string
     name: string
-        description: string
-        submitterName: string
-        submitterURL: string
-        link: string
-        logo: string
-        logoFileName: string
-        tags: string
-        reference: string
+    description: string
+    submitterName: string
+    submitterURL: string
+    link: string
+    logo: string
+    logoFileName: string
+    tags: string
+    reference: string
     updatedAt?: string | any;
-  }
+}
 
 type SearchParams = {
     search ?: string | string[]
-  tags?: string | string[]
+    tags?: string | string[]
 }
 
 const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) => {
+    const [agents, setAgents] = useState<Agent[]>([])
+    const [loading, setLoading] = useState(false)
+    const [showcat, setShowcat] = useState(false)
+    const [showSidebar, setShowSidebar] = useState(false)
+    const searchParams = useSearchParams();
+    const router = useRouter()
 
-  const [agents, setAgents]  = useState<Agent[]>([])
-  const [loading, setLoading] = useState(false)
-  const [showcat, setShowcat] = useState(false)
-  const [data, setData] = useState<any[]>([])
-  const searchParams = useSearchParams();
+    useEffect(() => {
+        fetchAgents();
+    }, [searchParams]);
 
-  const router = useRouter()
+    const fetchAgents = async () => {
+        try {
+            setLoading(true);
+            const queryString = searchParams.toString();
+            const finalQueryString = searchParams.get('tags') === 'All' 
+                ? queryString.replace(/&?tags=All/, '')
+                : queryString;
+            const response = await fetch(`/api/agent?${finalQueryString}`, { cache: 'no-cache' });
+            const data: Agent[] = await response.json();
+            setAgents(data);
+        } catch (error) {
+            console.error("Error fetching datasets:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  useEffect(() => {
-    
-    fetchAgents();
+    const updateQueryParams = (updatedParams: Partial<{ search : string; tags: string[]; }>) => {
+        const newSearchParams = new URLSearchParams(searchParams.toString());
 
-    //cokies
-    
-}, [searchParams,]);
-
-const fetchAgents = async () => {
-  try {
-    setLoading(true);
-    const queryString = searchParams.toString();
-    const response = await fetch(`/api/agent?${queryString}`, { cache: 'no-cache' });
-    const data: Agent[] = await response.json();
-    setAgents(data);
-  } catch (error) {
-    console.error("Error fetching datasets:", error);
-  } finally {
-    setLoading(false);
-  }
-};
-
-const updateQueryParams = (updatedParams: Partial<{ search : string; tags: string[]; }>) => {
-  const newSearchParams = new URLSearchParams(searchParams.toString());
-
-  Object.entries(updatedParams).forEach(([key, value]) => {
-    if (value === undefined || (Array.isArray(value) && value.length === 0)) {
-      newSearchParams.delete(key);
-    } else if (Array.isArray(value)) {
-      newSearchParams.set(key, value.join(','));
-    } else {
-      newSearchParams.set(key, value);
-    }
-  });
-
-  router.push(`/?${newSearchParams.toString()}`);
-};
-
-const handleInputChange = (e:any, key: 'tags') => {
-  const { value, checked } = e.target;
-  const currentValues = searchParams.get(key)?.split(',').filter(Boolean) || [];
-  const newValues = checked ? [...currentValues, value] : currentValues.filter((v) => v !== value);
-  updateQueryParams({ [key]: newValues });
-};
-
-const handleNameSearch = (e: any) => {
-  const search = e.target.value;
-  updateQueryParams({ search: search || undefined });
-};
-
-  return (
-    <>
-      <Nav />
-      <div className='flex w-full bg-black text-white min-h-screen '>
-        <div className='w-2/12 flex py-2 flex-col px-8 gap-4 border-r border-gray-500 pt-36'>
-        <div className='text-textcolor1'>Categories</div>
-        {['SEO', 'Writing', 'Web scraping', 'Programming', 'RAG'].map((tag) => (
-            <label key={tag} className="whitespace-nowrap text-base rounded-md border border-gray-600 px-2 py-1 ">
-              <input
-                type='checkbox'
-                value={tag}
-                checked={searchParams.get('tags')?.split(',').includes(tag) || false}
-                onChange={(e) => handleInputChange(e, 'tags')}
-                className='mr-1'
-              />
-              {tag}
-            </label>
-          ))}
-        </div>
-        <div className='w-5/6 px-8'>
-          <div className='flex gap-2 flex-col justify-center text-textcolor1 mt-32'>
-            <div className=' text-4xl font-bold mb-2'>
-              An exclusive list of the 1000s of AI agents.
-            </div>
-            <div className='mb-3'>Carefully vetted and maintained by humans.</div>
-            <div className='flex gap-4 items-center mb-6'>
-              <div className='flex gap-1 items-center rounded-full bg-textcolor1 text-black px-2 py-1'>
-                <div>
-                  <Plus />
-                </div>
-                <div>Submit</div>
-              </div>
-              <div className='flex gap-1 items-center rounded-full bg-textcolor1 text-black px-2 py-1'>
-                <div>
-                  <MailPlus />
-                </div>
-                <div>Subscribe</div>
-              </div>
-            </div>
-            {showcat? <>
-            <div onClick={()=>setShowcat(false)} className='underline'>
-            Hide category
-            </div>
-            </>: <>
-            <div onClick={()=>setShowcat(true)} className='underline'>
-            Show category
-            </div>
-            </>}
-            {showcat?<>
-            <div className='flex gap-2'>
-            
-            {['SEO', 'Writing', 'Web scraping', 'Programming', 'RAG'].map((tag) => (
-            <label key={tag} className="whitespace-nowrap text-base rounded-md border border-gray-600 px-2 py-1 ">
-              <input
-                type='checkbox'
-                value={tag}
-                checked={searchParams.get('tags')?.split(',').includes(tag) || false}
-                onChange={(e) => handleInputChange(e, 'tags')}
-                className='mr-1'
-              />
-              {tag}
-            </label>
-          ))}
-            </div>
-            </>:
-            <>
-            <div></div>
-            </>
-            
+        Object.entries(updatedParams).forEach(([key, value]) => {
+            if (value === undefined || (Array.isArray(value) && value.length === 0)) {
+                newSearchParams.delete(key);
+            } else if (Array.isArray(value)) {
+                newSearchParams.set(key, value.join(','));
+            } else {
+                newSearchParams.set(key, value);
             }
-            
-            <div
-            
-              className='p-2 mt-2 lg:mt-4 md:mt-4 border border-green rounded-full w-9/12'
-            >
-              <input
-                type='text'
-                placeholder='Search agents'
-                value={searchParams.get('search') || ''}
-                onChange={handleNameSearch}
-                className='focus:outline-none focus:border-transparent text-lg w-full text-white bg-black'
-              />
+        });
+
+        router.push(`/?${newSearchParams.toString()}`);
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, key: 'tags') => {
+        const { value, checked } = e.target;
+        let newValues: string[];
+
+        if (value === 'All' && checked) {
+            newValues = ['All'];
+        } else if (value === 'All' && !checked) {
+            newValues = [];
+        } else {
+            const currentValues = searchParams.get(key)?.split(',').filter(Boolean) || [];
+            if (currentValues.includes('All')) {
+                newValues = checked ? [value] : [];
+            } else {
+                newValues = checked
+                    ? [...currentValues, value]
+                    : currentValues.filter((v) => v !== value);
+            }
+        }
+
+        updateQueryParams({ [key]: newValues });
+    };
+
+    const handleNameSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const search = e.target.value;
+        updateQueryParams({ search: search || undefined });
+    };
+
+  
+
+    return (
+        <>
+            <Nav />
+            <div className='flex w-full bg-black text-white min-h-screen'>
+                {/* Sidebar for large screens */}
+                <div className={`fixed left-0 top-0 z-2 w-2/12 h-screen overflow-y-auto flex py-2 flex-col px-8 gap-4 border-r border-gray-500 pt-36 bg-black transition-transform duration-300 ease-in-out transform ${showSidebar ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+                    <div className='text-textcolor1'>Categories</div>
+
+                    {['All', 'SEO', 'Writing', 'Web scraping', 'Programming', 'RAG'].map((tag) => (
+                        <label key={tag} className="whitespace-nowrap text-base rounded-md border border-gray-600 px-2 py-1 ">
+                            <input
+                                type='checkbox'
+                                value={tag}
+                                checked={searchParams.get('tags')?.split(',').includes(tag) || false}
+                                onChange={(e) => handleInputChange(e, 'tags')}
+                                className='mr-1'
+                            />
+                            {tag}
+                        </label>
+                    ))}
+                </div>
+
+                {/* Main content */}
+                <div className='w-full lg:w-10/12 lg:ml-auto px-4 lg:px-12 flex items-center mb-8'>
+                    <div className='flex gap-2 flex-col justify-center text-textcolor1 mt-32'>
+                        <div className='text-4xl font-bold mb-2'>
+                            An exclusive list of the 1000s of AI agents.
+                        </div>
+                        <div className='mb-3'>Carefully vetted and maintained by humans.</div>
+                        <div className='flex gap-4 items-center mb-6'>
+                            <div onClick={() =>{router.push('/')}} className='Cursor-point flex gap-1 items-center rounded-full bg-textcolor1 text-black px-2 py-1'>
+                                <div>
+                                    <Plus />
+                                </div>
+                                <div>Submit</div>
+                            </div>
+                            <div onClick={() =>{router.push('/')}} className='cursor-pointer flex gap-1 items-center rounded-full bg-textcolor1 text-black px-2 py-1'>
+                                <div>
+                                    <MailPlus />
+                                </div>
+                                <div>Subscribe</div>
+                            </div>
+                        </div>
+
+                        {/* Show category for small and medium screens */}
+                        <div className='lg:hidden'>
+                            {showcat ? (
+                                <>
+                                    <div onClick={() => setShowcat(false)} className='underline'>
+                                        Hide category
+                                    </div>
+                                    <div className='flex gap-2 flex-wrap mt-2'>
+                                        {['All','SEO', 'Writing', 'Web scraping', 'Programming', 'RAG'].map((tag) => (
+                                            <label key={tag} className="whitespace-nowrap text-base rounded-md border border-gray-600 px-2 py-1 ">
+                                                <input
+                                                    type='checkbox'
+                                                    value={tag}
+                                                    checked={searchParams.get('tags')?.split(',').includes(tag) || false}
+                                                    onChange={(e) => handleInputChange(e, 'tags')}
+                                                    className='mr-1'
+                                                />
+                                                {tag}
+                                            </label>
+                                        ))}
+                                    </div>
+                                </>
+                            ) : (
+                                <div onClick={() => setShowcat(true)} className='underline'>
+                                    Show category
+                                </div>
+                            )}
+                        </div>
+
+                        <div className='p-2 mt-2 lg:mt-4 md:mt-4 border border-green rounded-full w-full max-w-3xl'>
+                            <input
+                                type='text'
+                                placeholder='Search agents'
+                                value={searchParams.get('search') || ''}
+                                onChange={handleNameSearch}
+                                className='focus:outline-none focus:border-transparent text-lg w-full text-white bg-black'
+                            />
+                        </div>
+                        
+                        <div className='container mx-auto mt-6 bg-black'>
+                            {loading ? (
+                                <div className='flex justify-center mt-12'>
+                                    <div className="w-12 h-14 border-t-4 border-green border-solid p-2 border-textcolor1 rounded-full animate-spin">
+                                        <Image
+                                            src='/Bot (2).png'
+                                            alt='Youtube video'
+                                            width={30}
+                                            height={30}
+                                        />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-6 lg:gap-4'>
+                                    {agents && agents.map((agent: Agent) => (
+                                        <div
+                                            key={agent._id}
+                                            className='rounded-md p-4 flex flex-col justify-between hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-200 hover:border-textcolor2/60'
+                                            onClick={() => router.push(`/agent/${agent._id}`)}
+                                        >
+                                            <div>
+                                                <div className='flex gap-2 items-center'>
+                                                    <div>
+                                                        <Image
+                                                            src={agent.logo}
+                                                            alt={agent.name}
+                                                            width={45}
+                                                            height={45}
+                                                        />
+                                                    </div>
+                                                    <div className='text-lg font-semibold mb-2 line-clamp-1'>{agent.name}</div>
+                                                </div>
+                                                <p className='text-sm text-textcolor1 mb-4 line-clamp-2'>{agent.description}</p>
+                                            </div>
+                                            <div className='flex justify-between items-center'>
+                                                <span className='text-white-gray-500 text-xs font-medium rounded-md px-2 py-1'>
+                                                    {agent.tags[0]}
+                                                </span>
+                                                <span className='text-sm text-black rounded-md px-2 py-1 bg-green-200 border-green-200'>
+                                                    view
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+        
             </div>
-             
-             {/* Rendering */}
-             <div className='container mx-auto px-4 sm:px-6 lg:px-8 mt-6 bg-black'>
-      {loading ? (
-      <div className='flex justify-center mt-12'>
-      <div className="w-12 h-14 border-t-4 border-green border-solid p-2 border-textcolor1 rounded-full animate-spin">
-      <Image
-      src='/Bot (2).png'
-      alt='Youtube video'
-      width={55}
-      height={55}
-      />
-      </div>
-      </div>
-      ) : (
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-6 lg:gap-4'>
-      { agents && agents.map((agent: any) => (
-      <div
-
-      key={agent._id}
-      className=' rounded-md p-4 flex flex-col justify-between hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-200 hover:border-textcolor2/60'
-      onClick = {() => router.push(`/agent/${agent._id}`)}
-      >
-      <div>
-        <div className='flex gap-2 items-center'>
-
-            <div>
-            <Image
-                  src={agent.logo}
-                  alt= {agent.name}
-                  width={45}
-                  height={45}
-                />
-            </div>
-        <div className='text-lg font-semibold mb-2 line-clamp-1'>{agent.name}</div>
-        </div>
-      
-      <p className='text-sm text-textcolor1 mb-4 line-clamp-2'>{agent.description}</p>
-      </div>
-      <div className='flex justify-between items-center'>
-      <span className='bg-orange-600 text-white text-xs font-medium rounded-md px-2 py-1'>
-      {agent.website}
-      </span>
-      <span className='text-sm text-gray-500'>
-      Submitter: {agent.submitterName}
-      </span>
-      </div>
-      </div>
-      ))}
-      </div>
-      )}
-      </div>
-
-          </div>
-        </div>
-      </div>
-      
-    </>
-  )
+        </>
+    )
 }
 
 export default Main

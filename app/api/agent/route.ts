@@ -73,7 +73,7 @@ export async function POST(request: any) {
       const submitterName = formData.get('submitterName');
       const submitterURL = formData.get('submitterURL');
       const link = formData.get('link');
-      const tags = JSON.parse(formData.get('tags') || '[]'); // Parse tags as JSON
+      const tags = (formData.get('tags') as string).split(',').map(name => name.trim());// Parse tags as JSON
       const reference = formData.get('reference');
       const logo = formData.get('logo');
   

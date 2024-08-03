@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, models } from "mongoose";
 
 const AgentSchema = new mongoose.Schema({
   name: {
@@ -41,4 +41,5 @@ const AgentSchema = new mongoose.Schema({
   }
 },{ timestamps: true });
 
-export default mongoose.models.agsubmit || mongoose.model('agsubmit', AgentSchema);
+const agSubmit = models.agsubmit || mongoose.model('agsubmit', AgentSchema);
+export default agSubmit

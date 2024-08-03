@@ -12,12 +12,13 @@ const Nav = () => {
   };
 
   const menuItems = [
+    { text: 'Follow Creator', url: '/mailto:fosberg1addai@gmail.com' },
     { text: 'Analytics', url: '/docs' },
     { text: 'About', url: '/about' },
   ];
 
   return (
-    <nav className={`${isOpen? "bg-white":"bg-black" } border-b border-gray-700 backdrop-blur-md fixed top-0 left-0 right-0 `}>
+    <nav className={`${isOpen? "bg-black":"bg-black/10" } border-b border-gray-700 backdrop-blur-lg fixed top-0 left-0 right-0 z-10 `}>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -30,7 +31,7 @@ const Nav = () => {
                   height={45}
                 />
                 <div className={isOpen ? "text-white" : "text-white"}>
-                  AgentGalaxy <span className={`py-1 px-1 text-sm rounded-sm ${isOpen ? "bg-gray-600" : "bg-gray-400"}`}>experimental</span>
+                  AgentGalaxy <span className={`py-1 px-1 text-sm rounded-sm text-black ${isOpen ? "bg-green-200" : "bg-green-200"}`}>new</span>
                 </div>
               </div>
             </Link>
@@ -46,8 +47,8 @@ const Nav = () => {
                   </Link>
                 ))}
               </div>
-              <Link href="/modelform">
-                <div className="bg-textcolor1 text-black py-1 px-2  rounded-md hover:text-pink-500">
+              <Link href="/submitagent">
+                <div className="bg-textcolor1 text-black py-1 px-2  rounded-md hover:bg-textcolor2">
                   Submit
                 </div>
               </Link>
@@ -56,7 +57,7 @@ const Nav = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button onClick={toggleMenu} className={`${isOpen ? "text-white" : "text-black"} focus:outline-none`}>
+            <button onClick={toggleMenu} className={`${isOpen ? "text-white" : "text-white"} focus:outline-none`}>
               {isOpen ? <X size={24} /> : "Menu" }
             </button>
           </div>
@@ -74,9 +75,9 @@ const Nav = () => {
                 </div>
               </Link>
             ))}
-            <Link href="/modelform">
-              <div className="bg-white text-black block px-3 py-2 text-base font-medium rounded-sm">
-                Test your model
+            <Link href="/mailto:fosberg1addai@gmail.com">
+              <div className="bg-textcolor1 text-black rounded-full block px-3 py-2 text-base font-medium">
+                Boost your agent
               </div>
             </Link>
           </div>
