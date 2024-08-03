@@ -19,7 +19,7 @@ interface Dataset {
 async function getDataset(id: string): Promise<Dataset | null> {
   try {
     console.log(` Fetching metadata on dataset with ID: ${id}`)
-    const res = await fetch(`http://localhost:3000/api/agent/${id}`, { cache: 'no-store' });
+    const res = await fetch(`https://agentshive.vercel.app/api/agent/${id}`, { cache: 'no-store' });
     if (!res.ok) return null;
     const data: Dataset = await res.json();
     return data;
@@ -41,7 +41,7 @@ export const generateMetadata = async ({ params }: { params: { id: string } }): 
       title,
       description,
       type: 'article',
-      url: `http://localhost:3000/agent/${params.id}`,
+      url: `https://agentshive.vercel.app/agent/${params.id}`,
       images: [
         {
           url: 'https://yourdomain.com/og-image.jpg',
