@@ -196,13 +196,13 @@ const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) =>
                             )}
                         </div>
 
-                        <div className='p-2 mt-2 lg:mt-4 md:mt-4 border border-green rounded-full w-full max-w-3xl'>
+                        <div className='p-2 mt-2 lg:mt-4 md:mt-4 border border-gray-700 rounded-full w-full max-w-3xl'>
                             <input
                                 type='text'
                                 placeholder='Search agents'
                                 value={searchParams.get('search') || ''}
                                 onChange={handleNameSearch}
-                                className='focus:outline-none focus:border-transparent text-lg w-full text-white bg-black'
+                                className='focus:outline-none focus:border-transparent text-lg w-full text-gray-600 bg-black'
                             />
                         </div>
                         
