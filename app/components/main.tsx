@@ -202,7 +202,7 @@ const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) =>
                                 placeholder='Search agents'
                                 value={searchParams.get('search') || ''}
                                 onChange={handleNameSearch}
-                                className='focus:outline-none focus:border-transparent text-lg w-full text-gray-600 bg-black'
+                                className='focus:outline-none focus:border-transparent text-lg w-full text-white bg-black'
                             />
                         </div>
                         
