@@ -115,7 +115,7 @@ const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) =>
             ${
               searchParams.get('tags')?.split(',').includes(tag)
                 ? 'bg-green-200 text-black'
-                : 'bg-transparent text-textcolor1 border border-textcolor1 hover:bg-green-200 hover:text-black'
+                : 'bg-transparent text-textcolor1 border border-gray-600 hover:bg-green-200 hover:text-black'
             }
           `}
         >
