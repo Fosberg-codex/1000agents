@@ -191,7 +191,7 @@ const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) =>
                                 </>
                             ) : (
                                 <div onClick={() => setShowcat(true)} className='underline'>
-                                    Show category
+                                    Select category
                                 </div>
                             )}
                         </div>
