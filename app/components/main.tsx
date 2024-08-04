@@ -225,7 +225,7 @@ const Main = ({ initialSearchParams }: { initialSearchParams: SearchParams }) =>
                                     {agents && agents.map((agent: Agent) => (
                                         <div
                                             key={agent._id}
-                                            className='rounded-md p-4 flex flex-col justify-between hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-200 hover:border-textcolor2/60'
+                                            className='rounded-md p-4 flex flex-col justify-between hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-600 hover:border-textcolor2/60'
                                             onClick={() => router.push(`/agent/${agent._id}`)}
                                         >
                                             <div>
