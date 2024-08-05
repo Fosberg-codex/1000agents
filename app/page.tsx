@@ -19,8 +19,8 @@ export const generateMetadata = async ({
 
   if (name || tags) {
     const parts = [];
-    if (name) parts.push(`Name: ${Array.isArray(name) ? name.join(', ') : name}`);
-    if (tags) parts.push(`Location: ${Array.isArray(tags) ? tags.join(', ') : tags}`);
+    if (name) parts.push(`Title: ${Array.isArray(name) ? name.join(', ') : name}`);
+    if (tags) parts.push(`Category: ${Array.isArray(tags) ? tags.join(', ') : tags}`);
     
     title = `Search Results - ${parts.join(', ')}`;
     description = `Explore ${parts.join(', ')} in Agent Galaxy`;
